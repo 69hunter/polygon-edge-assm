@@ -22,8 +22,9 @@ type NodeInitInfo struct {
 	IP         string `json:"ip"`
 	NodeName   string `json:"node_name"`
 
-	GenesisValidatorKey string
-	GenesisNetworkID    string
+	GenesisValidatorKey		 string
+	GenesisValidatorBlsKey string
+	GenesisNetworkID       string
 }
 
 // Config holds the general info
@@ -43,6 +44,7 @@ type GenesisConfig struct {
 	PoS               bool   `json:"pos"`
 	EpochSize         string `json:"epoch_size"`
 	BlockGasLimit     string `json:"block_gas_limit"`
+	BlockTime     		string `json:"block_time"`
 	MaxValidatorCount string `json:"max_validator_count"`
 	MinValidatorCount string `json:"min_validator_count"`
 	Consensus         string `json:"consensus"`

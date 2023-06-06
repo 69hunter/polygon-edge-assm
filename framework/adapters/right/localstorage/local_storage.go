@@ -15,8 +15,8 @@ import (
 	"strings"
 )
 
-// pin the relese to v0.5.1 - before BLS breaking change
-const releaseURL string = "https://api.github.com/repos/0xPolygon/polygon-edge/releases/77894422"
+// pin the relese to v0.9.0
+const releaseURL string = "https://api.github.com/repos/0xPolygon/polygon-edge/releases/101972122"
 
 type Adapter struct {
 }
@@ -132,12 +132,15 @@ func (a Adapter) GetEdge() error {
 }
 
 func (a Adapter) RunGenesisCmd(args []string) error {
-	var out bytes.Buffer
+	var out 	 bytes.Buffer
+	var stderr bytes.Buffer
 
 	cmd := exec.Command("/tmp/polygon-edge", args...)
 	cmd.Stdout = &out
+	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return fmt.Errorf("could not run genesis command err=%w", err)
 	}
 

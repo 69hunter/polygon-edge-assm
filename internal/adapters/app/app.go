@@ -70,6 +70,11 @@ func (a *Adapter) LambdaHandler(request core.Core) (string, error) {
 				return "", err
 			}
 
+			valBlsKey, err := a.assm.GetValidatorBlsKey(fmt.Sprintf("/%s/%s/validator-bls-key", node.SSMParamID, node.NodeName))
+			if err != nil {
+				return "", err
+			}
+
 			netwKey, err := a.assm.GetNetworkKey(fmt.Sprintf("/%s/%s/network-key", node.SSMParamID, node.NodeName))
 			if err != nil {
 				return "", err
@@ -77,11 +82,12 @@ func (a *Adapter) LambdaHandler(request core.Core) (string, error) {
 
 			// set validator and network keys to the internal structure
 			newNode := core.NodeInitInfo{
-				SSMParamID:          node.SSMParamID,
-				IP:                  node.IP,
-				NodeName:            node.NodeName,
-				GenesisValidatorKey: valKey,
-				GenesisNetworkID:    netwKey,
+				SSMParamID:          		node.SSMParamID,
+				IP:                  		node.IP,
+				NodeName:            		node.NodeName,
+				GenesisValidatorKey: 		valKey,
+				GenesisValidatorBlsKey: valBlsKey,
+				GenesisNetworkID:    		netwKey,
 			}
 
 			nodesInfo.AllNodesInitInfo[i] = newNode
@@ -167,6 +173,7 @@ func (a *Adapter) SetConfig(receivedConf core.Config) error {
 	conf.EpochSize = receivedConf.EpochSize
 	conf.ChainID = receivedConf.ChainID
 	conf.BlockGasLimit = receivedConf.BlockGasLimit
+	conf.BlockTime = receivedConf.BlockTime
 
 	conf.FileLocation = "/tmp/genesis.json"
 

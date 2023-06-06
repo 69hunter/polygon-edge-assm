@@ -36,6 +36,11 @@ func (a *Adapter) generateGenesisCommand() []string {
 		genCmd = append(genCmd, "--block-gas-limit", coreData.Config.BlockGasLimit)
 	}
 
+	// Block Gas Limit
+	if coreData.Config.BlockTime != "" {
+		genCmd = append(genCmd, "--block-time", coreData.Config.BlockTime)
+	}
+
 	// Max validator count
 	if coreData.Config.PoS && coreData.Config.MaxValidatorCount != "" {
 		genCmd = append(genCmd, "--max-validator-count", coreData.Config.MaxValidatorCount)
@@ -48,9 +53,15 @@ func (a *Adapter) generateGenesisCommand() []string {
 
 	// add validators and keys
 	for _, v := range coreData.AllNodesInitInfo {
-		genCmd = append(genCmd, "--ibft-validator="+v.GenesisValidatorKey)
 		genCmd = append(genCmd,
-			fmt.Sprintf("--bootnode=/ip4/%s/tcp/1478/p2p/%s",
+			"--ibft-validator",
+			fmt.Sprintf("%s:%s",
+				v.GenesisValidatorKey,
+				v.GenesisValidatorBlsKey),
+		)
+		genCmd = append(genCmd,
+			"--bootnode",
+			fmt.Sprintf("/ip4/%s/tcp/1478/p2p/%s",
 				strings.TrimSpace(v.IP),
 				strings.TrimSpace(v.GenesisNetworkID)),
 		)

@@ -36,6 +36,7 @@ func (a *Adapter) SetConfig(config core.Core) {
 	a.config.Premine = config.Config.Premine
 	a.config.Consensus = config.Config.Consensus
 	a.config.BlockGasLimit = config.Config.BlockGasLimit
+	a.config.BlockTime = config.Config.BlockTime
 	a.config.ChainID = config.Config.ChainID
 	a.config.EpochSize = config.Config.EpochSize
 	a.config.MaxValidatorCount = config.Config.MaxValidatorCount
